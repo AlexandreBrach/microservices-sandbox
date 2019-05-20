@@ -1,0 +1,55 @@
+version: '3.2'
+
+services:
+
+    gateway:
+        image: local/gateway:0.0
+        restart: on-failure
+        ports:
+            - $APPLICATION_PORT:80
+
+    backend:
+        image: local/backend:0.0
+        environment:
+        - POSTGRES_HOST=db
+        - POSTGRES_DB=sandbox
+        - POSTGRES_USER=user
+        - POSTGRES_PASSWORD=pwd
+
+    db:
+        image: postgres:9.6.8
+        restart: on-failure
+        volumes:
+        - database:/var/lib/postgresql/data
+        environment:
+        - POSTGRES_DB=sandbox
+        - POSTGRES_USER=user
+        - POSTGRES_PASSWORD=pwd
+        - TZ=Europe/Paris
+        - PGTZ=Europe/Paris
+
+    adminer:
+        image: adminer:4.3-standalone
+        restart: on-failure
+        ports:
+            - $ADMINER_PORT:8080
+        environment:
+            - ADMINER_DESIGN=ng9
+
+    frontend:
+        image: local/frontend:0.0
+
+    bus:
+        image: library/rabbitmq:3.6-management
+        restart: on-failure
+        environment:
+            - RABBITMQ_DEFAULT_USER=rabbit
+            - RABBITMQ_DEFAULT_PASS=rabbit
+            - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error}]
+        ports:
+            - 15672:15672
+
+volumes:
+    database:
+        driver: local
+
