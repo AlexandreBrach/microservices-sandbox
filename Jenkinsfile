@@ -5,18 +5,19 @@ pipeline {
         stage('Build frontend') {
             steps {
                 sh "docker build -t ${REPOSITORY_URL}/microsandbox/frontend:${TAG} frontend"
+                sh "docker push ${REPOSITORY_URL}/microsandbox/frontend:${TAG}"
             }
         }
         stage('Build backend') {
             steps {
-                sh 'cd backend'
                 sh "docker build -t ${REPOSITORY_URL}/microsandbox/backend:${TAG} backend"
+                sh "docker push ${REPOSITORY_URL}/microsandbox/backend:${TAG}"
             }
         }
         stage('Build gateway') {
             steps {
-                sh 'cd gateway'
                 sh "docker build -t ${REPOSITORY_URL}/microsandbox/gateway:${TAG} gateway"
+                sh "docker push ${REPOSITORY_URL}/microsandbox/gateway:${TAG}"
             }
         }
         stage('Test') {
