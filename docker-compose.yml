@@ -3,13 +3,13 @@ version: '3.2'
 services:
 
     gateway:
-        image: $DOCKER_REPOSITORY/gateway:$DOCKER_TAG
+        image: local/gateway:0.0
         restart: on-failure
         ports:
             - $APPLICATION_PORT:80
 
     backend:
-        image: $DOCKER_REPOSITORY/backend:$DOCKER_TAG
+        image: local/backend:0.0
         environment:
         - POSTGRES_HOST=db
         - POSTGRES_DB=sandbox
@@ -37,7 +37,7 @@ services:
             - ADMINER_DESIGN=ng9
 
     frontend:
-        image: $DOCKER_REPOSITORY/frontend:$DOCKER_TAG
+        image: local/frontend:0.0
 
     bus:
         image: library/rabbitmq:3.6-management

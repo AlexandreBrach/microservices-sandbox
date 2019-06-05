@@ -2,10 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build frontend') {
             steps {
-                sh 'cp env.dist .env'
-                sh 'docker-compose build'
+                sh "docker build -t ${REPOSITORY_URL}/microsandbox/frontend:${TAG} frontend"
+            }
+        }
+        stage('Build backend') {
+            steps {
+                sh 'cd backend'
+                sh "docker build -t ${REPOSITORY_URL}/microsandbox/backend:${TAG} backend"
+            }
+        }
+        stage('Build gateway') {
+            steps {
+                sh 'cd gateway'
+                sh "docker build -t ${REPOSITORY_URL}/microsandbox/gateway:${TAG} gateway"
             }
         }
         stage('Test') {
