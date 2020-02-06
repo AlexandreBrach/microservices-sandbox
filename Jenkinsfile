@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'REPOSITORY_URL', defaultValue: '', description: 'Docker repository url')
+
+        text(name: 'TAG', defaultValue: '', description: 'The tag of the built Docker image')
+
+    }
+
     stages {
         stage('Build frontend') {
             steps {
