@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'REPOSITORY_URL', defaultValue: '', description: 'Docker repository url')
+        string(name: 'REPOSITORY_URL', defaultValue: 'env.REPOSITORY_URL', description: 'Docker repository url')
 
-        text(name: 'TAG', defaultValue: '', description: 'The tag of the built Docker image')
+        text(name: 'TAG', defaultValue: 'env.TAG', description: 'The tag of the built Docker image')
 
     }
 
